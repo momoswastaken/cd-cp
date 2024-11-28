@@ -24,12 +24,10 @@
 	
 	int *arrayScope = NULL;
 
-	// Original function definition
-	// void yyerror(const char *msg)
-
-	// Updated function definition
-	void yyerror(YYLTYPE *yylloc, const char *msg) {
-		fprintf(stderr, "Error at line %d: %s\n", yylloc->first_line, msg);
+	void yyerror(const char *msg)
+	{
+		printf("\nSyntax Error at Line %d, Column : %d\n",  yylineno, yylloc.last_column);
+		exit(0);
 	}
 
 	typedef struct record

@@ -1,1780 +1,1831 @@
-   0  $accept : StartDebugger $end
+Terminals unused in grammar
 
-   1  $$1 :
+    T_Return
+    T_NEQ
+    ID
+    ND
+    DD
+    T_String
+    T_OB
+    T_Def
+    T_List
 
-   2  StartDebugger : $$1 StartParse T_EndOfFile
 
-   3  constant : T_Number
+State 88 conflicts: 2 shift/reduce
 
-   4  term : T_ID
-   5       | constant
 
-   6  StartParse : T_NL StartParse
+Grammar
 
-   7  $$2 :
+    0 $accept: StartDebugger $end
 
-   8  StartParse : finalStatements T_NL $$2 StartParse
-   9             | finalStatements T_NL
+    1 $@1: ε
 
-  10  basic_stmt : break_stmt
-  11             | assign_stmt
-  12             | arith_exp
-  13             | bool_exp
-  14             | print_stmt
+    2 StartDebugger: $@1 StartParse T_EndOfFile
 
-  15  arith_exp : term
-  16            | arith_exp T_PL arith_exp
-  17            | arith_exp T_MN arith_exp
-  18            | arith_exp T_ML arith_exp
-  19            | arith_exp T_DV arith_exp
-  20            | T_MN arith_exp
-  21            | T_OP arith_exp T_CP
+    3 constant: T_Number
 
-  22  bool_exp : bool_term T_Or bool_term
-  23           | arith_exp T_LT arith_exp
-  24           | bool_term T_And bool_term
-  25           | arith_exp T_GT arith_exp
-  26           | arith_exp T_ELT arith_exp
-  27           | arith_exp T_EGT arith_exp
-  28           | bool_term
+    4 term: T_ID
+    5     | constant
 
-  29  bool_term : bool_factor
-  30            | arith_exp T_EQ arith_exp
-  31            | arith_exp T_EQ bool_term
-  32            | T_True
-  33            | T_False
+    6 StartParse: T_NL StartParse
 
-  34  bool_factor : T_Not bool_factor
-  35              | T_OP bool_exp T_CP
+    7 $@2: ε
 
-  36  break_stmt : T_Break
+    8 StartParse: finalStatements T_NL $@2 StartParse
+    9           | finalStatements T_NL
 
-  37  assign_stmt : T_ID T_EQL arith_exp
-  38              | T_ID T_EQL bool_exp
+   10 basic_stmt: break_stmt
+   11           | assign_stmt
+   12           | arith_exp
+   13           | bool_exp
+   14           | print_stmt
 
-  39  print_stmt : T_Print T_OP term T_CP
+   15 arith_exp: term
+   16          | arith_exp T_PL arith_exp
+   17          | arith_exp T_MN arith_exp
+   18          | arith_exp T_ML arith_exp
+   19          | arith_exp T_DV arith_exp
+   20          | T_MN arith_exp
+   21          | T_OP arith_exp T_CP
 
-  40  finalStatements : basic_stmt
-  41                  | cmpd_stmt
-  42                  | error T_NL
+   22 bool_exp: bool_term T_Or bool_term
+   23         | arith_exp T_LT arith_exp
+   24         | bool_term T_And bool_term
+   25         | arith_exp T_GT arith_exp
+   26         | arith_exp T_ELT arith_exp
+   27         | arith_exp T_EGT arith_exp
+   28         | bool_term
 
-  43  cmpd_stmt : if_stmt
-  44            | while_stmt
-  45            | for_stmt
+   29 bool_term: bool_factor
+   30          | arith_exp T_EQ arith_exp
+   31          | arith_exp T_EQ bool_term
+   32          | T_True
+   33          | T_False
+
+   34 bool_factor: T_Not bool_factor
+   35            | T_OP bool_exp T_CP
 
-  46  if_stmt : T_If bool_exp T_Cln start_suite
-  47          | T_If bool_exp T_Cln start_suite elif_stmts
+   36 break_stmt: T_Break
 
-  48  elif_stmts : else_stmt
-  49             | T_Elif bool_exp T_Cln start_suite elif_stmts
+   37 assign_stmt: T_ID T_EQL arith_exp
+   38            | T_ID T_EQL bool_exp
 
-  50  else_stmt : T_Else T_Cln start_suite
+   39 print_stmt: T_Print T_OP term T_CP
+
+   40 finalStatements: basic_stmt
+   41                | cmpd_stmt
+   42                | error T_NL
+
+   43 cmpd_stmt: if_stmt
+   44          | while_stmt
+   45          | for_stmt
+
+   46 if_stmt: T_If bool_exp T_Cln start_suite
+   47        | T_If bool_exp T_Cln start_suite elif_stmts
+
+   48 elif_stmts: else_stmt
+   49           | T_Elif bool_exp T_Cln start_suite elif_stmts
+
+   50 else_stmt: T_Else T_Cln start_suite
+
+   51 while_stmt: T_While bool_exp T_Cln start_suite
+
+   52 myrange: term
+   53        | term T_Comma term
+   54        | term T_Comma term T_Comma term
+
+   55 for_stmt: T_For T_ID T_In T_Range T_OP myrange T_CP T_Cln start_suite
+
+   56 start_suite: basic_stmt
+
+   57 $@3: ε
+
+   58 start_suite: T_NL $@3 finalStatements suite
+
+   59 suite: T_NL finalStatements suite
+   60      | T_NL end_suite
+
+   61 $@4: ε
+
+   62 end_suite: T_CB $@4 finalStatements
+
+   63 $@5: ε
+
+   64 end_suite: T_CB $@5
+   65          | ε
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256) 42
+    T_EndOfFile (258) 2
+    T_Return (259)
+    T_Number (260) 3
+    T_True (261) 32
+    T_False (262) 33
+    T_ID (263) 4 37 38 55
+    T_Print (264) 39
+    T_Range (265) 55
+    T_Cln (266) 46 47 49 50 51 55
+    T_NL (267) 6 8 9 42 58 59 60
+    T_EQL (268) 37 38
+    T_NEQ (269)
+    T_EQ (270) 30 31
+    T_GT (271) 25
+    T_LT (272) 23
+    T_EGT (273) 27
+    T_ELT (274) 26
+    T_Or (275) 22
+    T_And (276) 24
+    T_Not (277) 34
+    T_In (278) 55
+    ID (279)
+    ND (280)
+    DD (281)
+    T_String (282)
+    T_If (283) 46 47
+    T_Elif (284) 49
+    T_While (285) 51
+    T_For (286) 55
+    T_Else (287) 50
+    T_Break (288) 36
+    T_MN (289) 17 20
+    T_PL (290) 16
+    T_DV (291) 19
+    T_ML (292) 18
+    T_OP (293) 21 35 39 55
+    T_CP (294) 21 35 39 55
+    T_OB (295)
+    T_CB (296) 62 64
+    T_Def (297)
+    T_Comma (298) 53 54
+    T_List (299)
+
+
+Nonterminals, with rules where they appear
+
+    $accept (45)
+        on left: 0
+    StartDebugger <node> (46)
+        on left: 2
+        on right: 0
+    $@1 (47)
+        on left: 1
+        on right: 2
+    constant <node> (48)
+        on left: 3
+        on right: 5
+    term <node> (49)
+        on left: 4 5
+        on right: 15 39 52 53 54
+    StartParse <node> (50)
+        on left: 6 8 9
+        on right: 2 6 8
+    $@2 (51)
+        on left: 7
+        on right: 8
+    basic_stmt <node> (52)
+        on left: 10 11 12 13 14
+        on right: 40 56
+    arith_exp <node> (53)
+        on left: 15 16 17 18 19 20 21
+        on right: 12 16 17 18 19 20 21 23 25 26 27 30 31 37
+    bool_exp <node> (54)
+        on left: 22 23 24 25 26 27 28
+        on right: 13 35 38 46 47 49 51
+    bool_term <node> (55)
+        on left: 29 30 31 32 33
+        on right: 22 24 28 31
+    bool_factor <node> (56)
+        on left: 34 35
+        on right: 29 34
+    break_stmt <node> (57)
+        on left: 36
+        on right: 10
+    assign_stmt <node> (58)
+        on left: 37 38
+        on right: 11
+    print_stmt <node> (59)
+        on left: 39
+        on right: 14
+    finalStatements <node> (60)
+        on left: 40 41 42
+        on right: 8 9 58 59 62
+    cmpd_stmt <node> (61)
+        on left: 43 44 45
+        on right: 41
+    if_stmt <node> (62)
+        on left: 46 47
+        on right: 43
+    elif_stmts <node> (63)
+        on left: 48 49
+        on right: 47 49
+    else_stmt <node> (64)
+        on left: 50
+        on right: 48
+    while_stmt <node> (65)
+        on left: 51
+        on right: 44
+    myrange <node> (66)
+        on left: 52 53 54
+        on right: 55
+    for_stmt <node> (67)
+        on left: 55
+        on right: 45
+    start_suite <node> (68)
+        on left: 56 58
+        on right: 46 47 49 50 51 55
+    $@3 (69)
+        on left: 57
+        on right: 58
+    suite <node> (70)
+        on left: 59 60
+        on right: 58 59
+    end_suite <node> (71)
+        on left: 62 64 65
+        on right: 60
+    $@4 (72)
+        on left: 61
+        on right: 62
+    $@5 (73)
+        on left: 63
+        on right: 64
+
+
+State 0
+
+    0 $accept: • StartDebugger $end
+
+    $default  reduce using rule 1 ($@1)
+
+    StartDebugger  go to state 1
+    $@1            go to state 2
+
+
+State 1
+
+    0 $accept: StartDebugger • $end
+
+    $end  shift, and go to state 3
+
+
+State 2
+
+    2 StartDebugger: $@1 • StartParse T_EndOfFile
+
+    error     shift, and go to state 4
+    T_Number  shift, and go to state 5
+    T_True    shift, and go to state 6
+    T_False   shift, and go to state 7
+    T_ID      shift, and go to state 8
+    T_Print   shift, and go to state 9
+    T_NL      shift, and go to state 10
+    T_Not     shift, and go to state 11
+    T_If      shift, and go to state 12
+    T_While   shift, and go to state 13
+    T_For     shift, and go to state 14
+    T_Break   shift, and go to state 15
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 17
+
+    constant         go to state 18
+    term             go to state 19
+    StartParse       go to state 20
+    basic_stmt       go to state 21
+    arith_exp        go to state 22
+    bool_exp         go to state 23
+    bool_term        go to state 24
+    bool_factor      go to state 25
+    break_stmt       go to state 26
+    assign_stmt      go to state 27
+    print_stmt       go to state 28
+    finalStatements  go to state 29
+    cmpd_stmt        go to state 30
+    if_stmt          go to state 31
+    while_stmt       go to state 32
+    for_stmt         go to state 33
+
+
+State 3
+
+    0 $accept: StartDebugger $end •
+
+    $default  accept
+
+
+State 4
+
+   42 finalStatements: error • T_NL
+
+    T_NL  shift, and go to state 34
+
+
+State 5
+
+    3 constant: T_Number •
+
+    $default  reduce using rule 3 (constant)
+
+
+State 6
+
+   32 bool_term: T_True •
+
+    $default  reduce using rule 32 (bool_term)
+
+
+State 7
+
+   33 bool_term: T_False •
+
+    $default  reduce using rule 33 (bool_term)
+
+
+State 8
+
+    4 term: T_ID •
+   37 assign_stmt: T_ID • T_EQL arith_exp
+   38            | T_ID • T_EQL bool_exp
+
+    T_EQL  shift, and go to state 35
+
+    $default  reduce using rule 4 (term)
+
+
+State 9
+
+   39 print_stmt: T_Print • T_OP term T_CP
+
+    T_OP  shift, and go to state 36
+
+
+State 10
+
+    6 StartParse: T_NL • StartParse
+
+    error     shift, and go to state 4
+    T_Number  shift, and go to state 5
+    T_True    shift, and go to state 6
+    T_False   shift, and go to state 7
+    T_ID      shift, and go to state 8
+    T_Print   shift, and go to state 9
+    T_NL      shift, and go to state 10
+    T_Not     shift, and go to state 11
+    T_If      shift, and go to state 12
+    T_While   shift, and go to state 13
+    T_For     shift, and go to state 14
+    T_Break   shift, and go to state 15
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 17
+
+    constant         go to state 18
+    term             go to state 19
+    StartParse       go to state 37
+    basic_stmt       go to state 21
+    arith_exp        go to state 22
+    bool_exp         go to state 23
+    bool_term        go to state 24
+    bool_factor      go to state 25
+    break_stmt       go to state 26
+    assign_stmt      go to state 27
+    print_stmt       go to state 28
+    finalStatements  go to state 29
+    cmpd_stmt        go to state 30
+    if_stmt          go to state 31
+    while_stmt       go to state 32
+    for_stmt         go to state 33
+
+
+State 11
+
+   34 bool_factor: T_Not • bool_factor
+
+    T_Not  shift, and go to state 11
+    T_OP   shift, and go to state 38
+
+    bool_factor  go to state 39
+
+
+State 12
+
+   46 if_stmt: T_If • bool_exp T_Cln start_suite
+   47        | T_If • bool_exp T_Cln start_suite elif_stmts
+
+    T_Number  shift, and go to state 5
+    T_True    shift, and go to state 6
+    T_False   shift, and go to state 7
+    T_ID      shift, and go to state 40
+    T_Not     shift, and go to state 11
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 17
 
-  51  while_stmt : T_While bool_exp T_Cln start_suite
+    constant     go to state 18
+    term         go to state 19
+    arith_exp    go to state 41
+    bool_exp     go to state 42
+    bool_term    go to state 24
+    bool_factor  go to state 25
 
-  52  myrange : term
-  53          | term T_Comma term
-  54          | term T_Comma term T_Comma term
 
-  55  for_stmt : T_For T_ID T_In T_Range T_OP myrange T_CP T_Cln start_suite
+State 13
 
-  56  start_suite : basic_stmt
+   51 while_stmt: T_While • bool_exp T_Cln start_suite
 
-  57  $$3 :
+    T_Number  shift, and go to state 5
+    T_True    shift, and go to state 6
+    T_False   shift, and go to state 7
+    T_ID      shift, and go to state 40
+    T_Not     shift, and go to state 11
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 17
 
-  58  start_suite : T_NL $$3 finalStatements suite
+    constant     go to state 18
+    term         go to state 19
+    arith_exp    go to state 41
+    bool_exp     go to state 43
+    bool_term    go to state 24
+    bool_factor  go to state 25
 
-  59  suite : T_NL finalStatements suite
-  60        | T_NL end_suite
 
-  61  $$4 :
+State 14
 
-  62  end_suite : T_CB $$4 finalStatements
+   55 for_stmt: T_For • T_ID T_In T_Range T_OP myrange T_CP T_Cln start_suite
 
-  63  $$5 :
+    T_ID  shift, and go to state 44
 
-  64  end_suite : T_CB $$5
-  65            |
-
-state 0
-	$accept : . StartDebugger $end  (0)
-	$$1 : .  (1)
 
-	.  reduce 1
+State 15
 
-	StartDebugger  goto 1
-	$$1  goto 2
+   36 break_stmt: T_Break •
 
+    $default  reduce using rule 36 (break_stmt)
 
-state 1
-	$accept : StartDebugger . $end  (0)
 
-	$end  accept
+State 16
 
+   20 arith_exp: T_MN • arith_exp
 
-state 2
-	StartDebugger : $$1 . StartParse T_EndOfFile  (2)
+    T_Number  shift, and go to state 5
+    T_ID      shift, and go to state 40
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 45
 
-	error  shift 3
-	T_Number  shift 4
-	T_True  shift 5
-	T_False  shift 6
-	T_ID  shift 7
-	T_Print  shift 8
-	T_NL  shift 9
-	T_Not  shift 10
-	T_If  shift 11
-	T_While  shift 12
-	T_For  shift 13
-	T_Break  shift 14
-	T_MN  shift 15
-	T_OP  shift 16
-	.  error
-
-	StartParse  goto 17
-	finalStatements  goto 18
-	arith_exp  goto 19
-	bool_exp  goto 20
-	term  goto 21
-	constant  goto 22
-	basic_stmt  goto 23
-	cmpd_stmt  goto 24
-	break_stmt  goto 25
-	print_stmt  goto 26
-	if_stmt  goto 27
-	while_stmt  goto 28
-	for_stmt  goto 29
-	assign_stmt  goto 30
-	bool_term  goto 31
-	bool_factor  goto 32
-
-
-state 3
-	finalStatements : error . T_NL  (42)
-
-	T_NL  shift 33
-	.  error
-
-
-state 4
-	constant : T_Number .  (3)
-
-	.  reduce 3
-
-
-state 5
-	bool_term : T_True .  (32)
-
-	.  reduce 32
-
-
-state 6
-	bool_term : T_False .  (33)
-
-	.  reduce 33
-
-
-state 7
-	term : T_ID .  (4)
-	assign_stmt : T_ID . T_EQL arith_exp  (37)
-	assign_stmt : T_ID . T_EQL bool_exp  (38)
-
-	T_EQL  shift 34
-	T_NL  reduce 4
-	T_EQ  reduce 4
-	T_GT  reduce 4
-	T_LT  reduce 4
-	T_EGT  reduce 4
-	T_ELT  reduce 4
-	T_Elif  reduce 4
-	T_Else  reduce 4
-	T_MN  reduce 4
-	T_PL  reduce 4
-	T_DV  reduce 4
-	T_ML  reduce 4
-
-
-state 8
-	print_stmt : T_Print . T_OP term T_CP  (39)
-
-	T_OP  shift 35
-	.  error
-
-
-state 9
-	StartParse : T_NL . StartParse  (6)
-
-	error  shift 3
-	T_Number  shift 4
-	T_True  shift 5
-	T_False  shift 6
-	T_ID  shift 7
-	T_Print  shift 8
-	T_NL  shift 9
-	T_Not  shift 10
-	T_If  shift 11
-	T_While  shift 12
-	T_For  shift 13
-	T_Break  shift 14
-	T_MN  shift 15
-	T_OP  shift 16
-	.  error
-
-	StartParse  goto 36
-	finalStatements  goto 18
-	arith_exp  goto 19
-	bool_exp  goto 20
-	term  goto 21
-	constant  goto 22
-	basic_stmt  goto 23
-	cmpd_stmt  goto 24
-	break_stmt  goto 25
-	print_stmt  goto 26
-	if_stmt  goto 27
-	while_stmt  goto 28
-	for_stmt  goto 29
-	assign_stmt  goto 30
-	bool_term  goto 31
-	bool_factor  goto 32
-
-
-state 10
-	bool_factor : T_Not . bool_factor  (34)
-
-	T_Not  shift 10
-	T_OP  shift 37
-	.  error
+    constant   go to state 18
+    term       go to state 19
+    arith_exp  go to state 46
 
-	bool_factor  goto 38
 
-
-state 11
-	if_stmt : T_If . bool_exp T_Cln start_suite  (46)
-	if_stmt : T_If . bool_exp T_Cln start_suite elif_stmts  (47)
+State 17
 
-	T_Number  shift 4
-	T_True  shift 5
-	T_False  shift 6
-	T_ID  shift 39
-	T_Not  shift 10
-	T_MN  shift 15
-	T_OP  shift 16
-	.  error
-
-	arith_exp  goto 40
-	bool_exp  goto 41
-	term  goto 21
-	constant  goto 22
-	bool_term  goto 31
-	bool_factor  goto 32
-
-
-state 12
-	while_stmt : T_While . bool_exp T_Cln start_suite  (51)
-
-	T_Number  shift 4
-	T_True  shift 5
-	T_False  shift 6
-	T_ID  shift 39
-	T_Not  shift 10
-	T_MN  shift 15
-	T_OP  shift 16
-	.  error
-
-	arith_exp  goto 40
-	bool_exp  goto 42
-	term  goto 21
-	constant  goto 22
-	bool_term  goto 31
-	bool_factor  goto 32
-
-
-state 13
-	for_stmt : T_For . T_ID T_In T_Range T_OP myrange T_CP T_Cln start_suite  (55)
+   21 arith_exp: T_OP • arith_exp T_CP
+   35 bool_factor: T_OP • bool_exp T_CP
 
-	T_ID  shift 43
-	.  error
+    T_Number  shift, and go to state 5
+    T_True    shift, and go to state 6
+    T_False   shift, and go to state 7
+    T_ID      shift, and go to state 40
+    T_Not     shift, and go to state 11
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 17
 
+    constant     go to state 18
+    term         go to state 19
+    arith_exp    go to state 47
+    bool_exp     go to state 48
+    bool_term    go to state 24
+    bool_factor  go to state 25
 
-state 14
-	break_stmt : T_Break .  (36)
 
-	.  reduce 36
+State 18
 
+    5 term: constant •
 
-state 15
-	arith_exp : T_MN . arith_exp  (20)
+    $default  reduce using rule 5 (term)
 
-	T_Number  shift 4
-	T_ID  shift 39
-	T_MN  shift 15
-	T_OP  shift 44
-	.  error
 
-	arith_exp  goto 45
-	term  goto 21
-	constant  goto 22
+State 19
 
+   15 arith_exp: term •
 
-state 16
-	arith_exp : T_OP . arith_exp T_CP  (21)
-	bool_factor : T_OP . bool_exp T_CP  (35)
+    $default  reduce using rule 15 (arith_exp)
 
-	T_Number  shift 4
-	T_True  shift 5
-	T_False  shift 6
-	T_ID  shift 39
-	T_Not  shift 10
-	T_MN  shift 15
-	T_OP  shift 16
-	.  error
 
-	arith_exp  goto 46
-	bool_exp  goto 47
-	term  goto 21
-	constant  goto 22
-	bool_term  goto 31
-	bool_factor  goto 32
+State 20
 
+    2 StartDebugger: $@1 StartParse • T_EndOfFile
 
-state 17
-	StartDebugger : $$1 StartParse . T_EndOfFile  (2)
+    T_EndOfFile  shift, and go to state 49
 
-	T_EndOfFile  shift 48
-	.  error
 
+State 21
 
-state 18
-	StartParse : finalStatements . T_NL $$2 StartParse  (8)
-	StartParse : finalStatements . T_NL  (9)
+   40 finalStatements: basic_stmt •
 
-	T_NL  shift 49
-	.  error
+    $default  reduce using rule 40 (finalStatements)
 
 
-state 19
-	basic_stmt : arith_exp .  (12)
-	arith_exp : arith_exp . T_PL arith_exp  (16)
-	arith_exp : arith_exp . T_MN arith_exp  (17)
-	arith_exp : arith_exp . T_ML arith_exp  (18)
-	arith_exp : arith_exp . T_DV arith_exp  (19)
-	bool_exp : arith_exp . T_LT arith_exp  (23)
-	bool_exp : arith_exp . T_GT arith_exp  (25)
-	bool_exp : arith_exp . T_ELT arith_exp  (26)
-	bool_exp : arith_exp . T_EGT arith_exp  (27)
-	bool_term : arith_exp . T_EQ arith_exp  (30)
-	bool_term : arith_exp . T_EQ bool_term  (31)
+State 22
 
-	T_EQ  shift 50
-	T_GT  shift 51
-	T_LT  shift 52
-	T_EGT  shift 53
-	T_ELT  shift 54
-	T_MN  shift 55
-	T_PL  shift 56
-	T_DV  shift 57
-	T_ML  shift 58
-	T_NL  reduce 12
-	T_Elif  reduce 12
-	T_Else  reduce 12
+   12 basic_stmt: arith_exp •
+   16 arith_exp: arith_exp • T_PL arith_exp
+   17          | arith_exp • T_MN arith_exp
+   18          | arith_exp • T_ML arith_exp
+   19          | arith_exp • T_DV arith_exp
+   23 bool_exp: arith_exp • T_LT arith_exp
+   25         | arith_exp • T_GT arith_exp
+   26         | arith_exp • T_ELT arith_exp
+   27         | arith_exp • T_EGT arith_exp
+   30 bool_term: arith_exp • T_EQ arith_exp
+   31          | arith_exp • T_EQ bool_term
 
+    T_EQ   shift, and go to state 50
+    T_GT   shift, and go to state 51
+    T_LT   shift, and go to state 52
+    T_EGT  shift, and go to state 53
+    T_ELT  shift, and go to state 54
+    T_MN   shift, and go to state 55
+    T_PL   shift, and go to state 56
+    T_DV   shift, and go to state 57
+    T_ML   shift, and go to state 58
 
-state 20
-	basic_stmt : bool_exp .  (13)
+    $default  reduce using rule 12 (basic_stmt)
 
-	.  reduce 13
 
+State 23
 
-state 21
-	arith_exp : term .  (15)
+   13 basic_stmt: bool_exp •
 
-	.  reduce 15
+    $default  reduce using rule 13 (basic_stmt)
 
 
-state 22
-	term : constant .  (5)
+State 24
 
-	.  reduce 5
+   22 bool_exp: bool_term • T_Or bool_term
+   24         | bool_term • T_And bool_term
+   28         | bool_term •
 
+    T_Or   shift, and go to state 59
+    T_And  shift, and go to state 60
 
-state 23
-	finalStatements : basic_stmt .  (40)
+    $default  reduce using rule 28 (bool_exp)
 
-	.  reduce 40
 
+State 25
 
-state 24
-	finalStatements : cmpd_stmt .  (41)
+   29 bool_term: bool_factor •
 
-	.  reduce 41
+    $default  reduce using rule 29 (bool_term)
 
 
-state 25
-	basic_stmt : break_stmt .  (10)
+State 26
 
-	.  reduce 10
+   10 basic_stmt: break_stmt •
 
+    $default  reduce using rule 10 (basic_stmt)
 
-state 26
-	basic_stmt : print_stmt .  (14)
 
-	.  reduce 14
+State 27
 
+   11 basic_stmt: assign_stmt •
 
-state 27
-	cmpd_stmt : if_stmt .  (43)
+    $default  reduce using rule 11 (basic_stmt)
 
-	.  reduce 43
 
+State 28
 
-state 28
-	cmpd_stmt : while_stmt .  (44)
+   14 basic_stmt: print_stmt •
 
-	.  reduce 44
+    $default  reduce using rule 14 (basic_stmt)
 
 
-state 29
-	cmpd_stmt : for_stmt .  (45)
+State 29
 
-	.  reduce 45
+    8 StartParse: finalStatements • T_NL $@2 StartParse
+    9           | finalStatements • T_NL
 
+    T_NL  shift, and go to state 61
 
-state 30
-	basic_stmt : assign_stmt .  (11)
 
-	.  reduce 11
+State 30
 
+   41 finalStatements: cmpd_stmt •
 
-state 31
-	bool_exp : bool_term . T_Or bool_term  (22)
-	bool_exp : bool_term . T_And bool_term  (24)
-	bool_exp : bool_term .  (28)
+    $default  reduce using rule 41 (finalStatements)
 
-	T_Or  shift 59
-	T_And  shift 60
-	T_Cln  reduce 28
-	T_NL  reduce 28
-	T_Elif  reduce 28
-	T_Else  reduce 28
-	T_CP  reduce 28
 
+State 31
 
-state 32
-	bool_term : bool_factor .  (29)
+   43 cmpd_stmt: if_stmt •
 
-	.  reduce 29
+    $default  reduce using rule 43 (cmpd_stmt)
 
 
-state 33
-	finalStatements : error T_NL .  (42)
+State 32
 
-	.  reduce 42
+   44 cmpd_stmt: while_stmt •
 
+    $default  reduce using rule 44 (cmpd_stmt)
 
-state 34
-	assign_stmt : T_ID T_EQL . arith_exp  (37)
-	assign_stmt : T_ID T_EQL . bool_exp  (38)
 
-	T_Number  shift 4
-	T_True  shift 5
-	T_False  shift 6
-	T_ID  shift 39
-	T_Not  shift 10
-	T_MN  shift 15
-	T_OP  shift 16
-	.  error
+State 33
 
-	arith_exp  goto 61
-	bool_exp  goto 62
-	term  goto 21
-	constant  goto 22
-	bool_term  goto 31
-	bool_factor  goto 32
+   45 cmpd_stmt: for_stmt •
 
+    $default  reduce using rule 45 (cmpd_stmt)
 
-state 35
-	print_stmt : T_Print T_OP . term T_CP  (39)
 
-	T_Number  shift 4
-	T_ID  shift 39
-	.  error
+State 34
 
-	term  goto 63
-	constant  goto 22
+   42 finalStatements: error T_NL •
 
+    $default  reduce using rule 42 (finalStatements)
 
-state 36
-	StartParse : T_NL StartParse .  (6)
 
-	.  reduce 6
+State 35
 
+   37 assign_stmt: T_ID T_EQL • arith_exp
+   38            | T_ID T_EQL • bool_exp
 
-state 37
-	bool_factor : T_OP . bool_exp T_CP  (35)
+    T_Number  shift, and go to state 5
+    T_True    shift, and go to state 6
+    T_False   shift, and go to state 7
+    T_ID      shift, and go to state 40
+    T_Not     shift, and go to state 11
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 17
 
-	T_Number  shift 4
-	T_True  shift 5
-	T_False  shift 6
-	T_ID  shift 39
-	T_Not  shift 10
-	T_MN  shift 15
-	T_OP  shift 16
-	.  error
+    constant     go to state 18
+    term         go to state 19
+    arith_exp    go to state 62
+    bool_exp     go to state 63
+    bool_term    go to state 24
+    bool_factor  go to state 25
 
-	arith_exp  goto 40
-	bool_exp  goto 47
-	term  goto 21
-	constant  goto 22
-	bool_term  goto 31
-	bool_factor  goto 32
 
+State 36
 
-state 38
-	bool_factor : T_Not bool_factor .  (34)
+   39 print_stmt: T_Print T_OP • term T_CP
 
-	.  reduce 34
+    T_Number  shift, and go to state 5
+    T_ID      shift, and go to state 40
 
+    constant  go to state 18
+    term      go to state 64
 
-state 39
-	term : T_ID .  (4)
 
-	.  reduce 4
+State 37
 
+    6 StartParse: T_NL StartParse •
 
-state 40
-	arith_exp : arith_exp . T_PL arith_exp  (16)
-	arith_exp : arith_exp . T_MN arith_exp  (17)
-	arith_exp : arith_exp . T_ML arith_exp  (18)
-	arith_exp : arith_exp . T_DV arith_exp  (19)
-	bool_exp : arith_exp . T_LT arith_exp  (23)
-	bool_exp : arith_exp . T_GT arith_exp  (25)
-	bool_exp : arith_exp . T_ELT arith_exp  (26)
-	bool_exp : arith_exp . T_EGT arith_exp  (27)
-	bool_term : arith_exp . T_EQ arith_exp  (30)
-	bool_term : arith_exp . T_EQ bool_term  (31)
+    $default  reduce using rule 6 (StartParse)
 
-	T_EQ  shift 50
-	T_GT  shift 51
-	T_LT  shift 52
-	T_EGT  shift 53
-	T_ELT  shift 54
-	T_MN  shift 55
-	T_PL  shift 56
-	T_DV  shift 57
-	T_ML  shift 58
-	.  error
 
+State 38
 
-state 41
-	if_stmt : T_If bool_exp . T_Cln start_suite  (46)
-	if_stmt : T_If bool_exp . T_Cln start_suite elif_stmts  (47)
+   35 bool_factor: T_OP • bool_exp T_CP
 
-	T_Cln  shift 64
-	.  error
+    T_Number  shift, and go to state 5
+    T_True    shift, and go to state 6
+    T_False   shift, and go to state 7
+    T_ID      shift, and go to state 40
+    T_Not     shift, and go to state 11
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 17
 
+    constant     go to state 18
+    term         go to state 19
+    arith_exp    go to state 41
+    bool_exp     go to state 48
+    bool_term    go to state 24
+    bool_factor  go to state 25
 
-state 42
-	while_stmt : T_While bool_exp . T_Cln start_suite  (51)
 
-	T_Cln  shift 65
-	.  error
+State 39
 
+   34 bool_factor: T_Not bool_factor •
 
-state 43
-	for_stmt : T_For T_ID . T_In T_Range T_OP myrange T_CP T_Cln start_suite  (55)
+    $default  reduce using rule 34 (bool_factor)
 
-	T_In  shift 66
-	.  error
 
+State 40
 
-state 44
-	arith_exp : T_OP . arith_exp T_CP  (21)
+    4 term: T_ID •
 
-	T_Number  shift 4
-	T_ID  shift 39
-	T_MN  shift 15
-	T_OP  shift 44
-	.  error
+    $default  reduce using rule 4 (term)
 
-	arith_exp  goto 67
-	term  goto 21
-	constant  goto 22
 
+State 41
 
-state 45
-	arith_exp : arith_exp . T_PL arith_exp  (16)
-	arith_exp : arith_exp . T_MN arith_exp  (17)
-	arith_exp : arith_exp . T_ML arith_exp  (18)
-	arith_exp : arith_exp . T_DV arith_exp  (19)
-	arith_exp : T_MN arith_exp .  (20)
+   16 arith_exp: arith_exp • T_PL arith_exp
+   17          | arith_exp • T_MN arith_exp
+   18          | arith_exp • T_ML arith_exp
+   19          | arith_exp • T_DV arith_exp
+   23 bool_exp: arith_exp • T_LT arith_exp
+   25         | arith_exp • T_GT arith_exp
+   26         | arith_exp • T_ELT arith_exp
+   27         | arith_exp • T_EGT arith_exp
+   30 bool_term: arith_exp • T_EQ arith_exp
+   31          | arith_exp • T_EQ bool_term
 
-	T_DV  shift 57
-	T_ML  shift 58
-	T_Cln  reduce 20
-	T_NL  reduce 20
-	T_EQ  reduce 20
-	T_GT  reduce 20
-	T_LT  reduce 20
-	T_EGT  reduce 20
-	T_ELT  reduce 20
-	T_Or  reduce 20
-	T_And  reduce 20
-	T_Elif  reduce 20
-	T_Else  reduce 20
-	T_MN  reduce 20
-	T_PL  reduce 20
-	T_CP  reduce 20
+    T_EQ   shift, and go to state 50
+    T_GT   shift, and go to state 51
+    T_LT   shift, and go to state 52
+    T_EGT  shift, and go to state 53
+    T_ELT  shift, and go to state 54
+    T_MN   shift, and go to state 55
+    T_PL   shift, and go to state 56
+    T_DV   shift, and go to state 57
+    T_ML   shift, and go to state 58
 
 
-state 46
-	arith_exp : arith_exp . T_PL arith_exp  (16)
-	arith_exp : arith_exp . T_MN arith_exp  (17)
-	arith_exp : arith_exp . T_ML arith_exp  (18)
-	arith_exp : arith_exp . T_DV arith_exp  (19)
-	arith_exp : T_OP arith_exp . T_CP  (21)
-	bool_exp : arith_exp . T_LT arith_exp  (23)
-	bool_exp : arith_exp . T_GT arith_exp  (25)
-	bool_exp : arith_exp . T_ELT arith_exp  (26)
-	bool_exp : arith_exp . T_EGT arith_exp  (27)
-	bool_term : arith_exp . T_EQ arith_exp  (30)
-	bool_term : arith_exp . T_EQ bool_term  (31)
+State 42
 
-	T_EQ  shift 50
-	T_GT  shift 51
-	T_LT  shift 52
-	T_EGT  shift 53
-	T_ELT  shift 54
-	T_MN  shift 55
-	T_PL  shift 56
-	T_DV  shift 57
-	T_ML  shift 58
-	T_CP  shift 68
-	.  error
+   46 if_stmt: T_If bool_exp • T_Cln start_suite
+   47        | T_If bool_exp • T_Cln start_suite elif_stmts
 
+    T_Cln  shift, and go to state 65
 
-state 47
-	bool_factor : T_OP bool_exp . T_CP  (35)
 
-	T_CP  shift 69
-	.  error
+State 43
 
+   51 while_stmt: T_While bool_exp • T_Cln start_suite
 
-state 48
-	StartDebugger : $$1 StartParse T_EndOfFile .  (2)
+    T_Cln  shift, and go to state 66
 
-	.  reduce 2
 
+State 44
 
-state 49
-	StartParse : finalStatements T_NL . $$2 StartParse  (8)
-	StartParse : finalStatements T_NL .  (9)
-	$$2 : .  (7)
+   55 for_stmt: T_For T_ID • T_In T_Range T_OP myrange T_CP T_Cln start_suite
 
-	error  reduce 7
-	T_EndOfFile  reduce 9
-	T_Number  reduce 7
-	T_True  reduce 7
-	T_False  reduce 7
-	T_ID  reduce 7
-	T_Print  reduce 7
-	T_NL  reduce 7
-	T_Not  reduce 7
-	T_If  reduce 7
-	T_While  reduce 7
-	T_For  reduce 7
-	T_Break  reduce 7
-	T_MN  reduce 7
-	T_OP  reduce 7
+    T_In  shift, and go to state 67
 
-	$$2  goto 70
 
+State 45
 
-state 50
-	bool_term : arith_exp T_EQ . arith_exp  (30)
-	bool_term : arith_exp T_EQ . bool_term  (31)
+   21 arith_exp: T_OP • arith_exp T_CP
 
-	T_Number  shift 4
-	T_True  shift 5
-	T_False  shift 6
-	T_ID  shift 39
-	T_Not  shift 10
-	T_MN  shift 15
-	T_OP  shift 16
-	.  error
+    T_Number  shift, and go to state 5
+    T_ID      shift, and go to state 40
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 45
 
-	arith_exp  goto 71
-	term  goto 21
-	constant  goto 22
-	bool_term  goto 72
-	bool_factor  goto 32
+    constant   go to state 18
+    term       go to state 19
+    arith_exp  go to state 68
 
 
-state 51
-	bool_exp : arith_exp T_GT . arith_exp  (25)
+State 46
 
-	T_Number  shift 4
-	T_ID  shift 39
-	T_MN  shift 15
-	T_OP  shift 44
-	.  error
+   16 arith_exp: arith_exp • T_PL arith_exp
+   17          | arith_exp • T_MN arith_exp
+   18          | arith_exp • T_ML arith_exp
+   19          | arith_exp • T_DV arith_exp
+   20          | T_MN arith_exp •
 
-	arith_exp  goto 73
-	term  goto 21
-	constant  goto 22
+    T_DV  shift, and go to state 57
+    T_ML  shift, and go to state 58
 
+    $default  reduce using rule 20 (arith_exp)
 
-state 52
-	bool_exp : arith_exp T_LT . arith_exp  (23)
 
-	T_Number  shift 4
-	T_ID  shift 39
-	T_MN  shift 15
-	T_OP  shift 44
-	.  error
+State 47
 
-	arith_exp  goto 74
-	term  goto 21
-	constant  goto 22
+   16 arith_exp: arith_exp • T_PL arith_exp
+   17          | arith_exp • T_MN arith_exp
+   18          | arith_exp • T_ML arith_exp
+   19          | arith_exp • T_DV arith_exp
+   21          | T_OP arith_exp • T_CP
+   23 bool_exp: arith_exp • T_LT arith_exp
+   25         | arith_exp • T_GT arith_exp
+   26         | arith_exp • T_ELT arith_exp
+   27         | arith_exp • T_EGT arith_exp
+   30 bool_term: arith_exp • T_EQ arith_exp
+   31          | arith_exp • T_EQ bool_term
 
+    T_EQ   shift, and go to state 50
+    T_GT   shift, and go to state 51
+    T_LT   shift, and go to state 52
+    T_EGT  shift, and go to state 53
+    T_ELT  shift, and go to state 54
+    T_MN   shift, and go to state 55
+    T_PL   shift, and go to state 56
+    T_DV   shift, and go to state 57
+    T_ML   shift, and go to state 58
+    T_CP   shift, and go to state 69
 
-state 53
-	bool_exp : arith_exp T_EGT . arith_exp  (27)
 
-	T_Number  shift 4
-	T_ID  shift 39
-	T_MN  shift 15
-	T_OP  shift 44
-	.  error
+State 48
 
-	arith_exp  goto 75
-	term  goto 21
-	constant  goto 22
+   35 bool_factor: T_OP bool_exp • T_CP
 
+    T_CP  shift, and go to state 70
 
-state 54
-	bool_exp : arith_exp T_ELT . arith_exp  (26)
 
-	T_Number  shift 4
-	T_ID  shift 39
-	T_MN  shift 15
-	T_OP  shift 44
-	.  error
+State 49
 
-	arith_exp  goto 76
-	term  goto 21
-	constant  goto 22
+    2 StartDebugger: $@1 StartParse T_EndOfFile •
 
+    $default  reduce using rule 2 (StartDebugger)
 
-state 55
-	arith_exp : arith_exp T_MN . arith_exp  (17)
 
-	T_Number  shift 4
-	T_ID  shift 39
-	T_MN  shift 15
-	T_OP  shift 44
-	.  error
+State 50
 
-	arith_exp  goto 77
-	term  goto 21
-	constant  goto 22
+   30 bool_term: arith_exp T_EQ • arith_exp
+   31          | arith_exp T_EQ • bool_term
 
+    T_Number  shift, and go to state 5
+    T_True    shift, and go to state 6
+    T_False   shift, and go to state 7
+    T_ID      shift, and go to state 40
+    T_Not     shift, and go to state 11
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 17
 
-state 56
-	arith_exp : arith_exp T_PL . arith_exp  (16)
+    constant     go to state 18
+    term         go to state 19
+    arith_exp    go to state 71
+    bool_term    go to state 72
+    bool_factor  go to state 25
 
-	T_Number  shift 4
-	T_ID  shift 39
-	T_MN  shift 15
-	T_OP  shift 44
-	.  error
 
-	arith_exp  goto 78
-	term  goto 21
-	constant  goto 22
+State 51
 
+   25 bool_exp: arith_exp T_GT • arith_exp
 
-state 57
-	arith_exp : arith_exp T_DV . arith_exp  (19)
+    T_Number  shift, and go to state 5
+    T_ID      shift, and go to state 40
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 45
 
-	T_Number  shift 4
-	T_ID  shift 39
-	T_MN  shift 15
-	T_OP  shift 44
-	.  error
+    constant   go to state 18
+    term       go to state 19
+    arith_exp  go to state 73
 
-	arith_exp  goto 79
-	term  goto 21
-	constant  goto 22
 
+State 52
 
-state 58
-	arith_exp : arith_exp T_ML . arith_exp  (18)
+   23 bool_exp: arith_exp T_LT • arith_exp
 
-	T_Number  shift 4
-	T_ID  shift 39
-	T_MN  shift 15
-	T_OP  shift 44
-	.  error
+    T_Number  shift, and go to state 5
+    T_ID      shift, and go to state 40
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 45
 
-	arith_exp  goto 80
-	term  goto 21
-	constant  goto 22
+    constant   go to state 18
+    term       go to state 19
+    arith_exp  go to state 74
 
 
-state 59
-	bool_exp : bool_term T_Or . bool_term  (22)
+State 53
 
-	T_Number  shift 4
-	T_True  shift 5
-	T_False  shift 6
-	T_ID  shift 39
-	T_Not  shift 10
-	T_MN  shift 15
-	T_OP  shift 16
-	.  error
+   27 bool_exp: arith_exp T_EGT • arith_exp
 
-	arith_exp  goto 81
-	term  goto 21
-	constant  goto 22
-	bool_term  goto 82
-	bool_factor  goto 32
+    T_Number  shift, and go to state 5
+    T_ID      shift, and go to state 40
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 45
 
+    constant   go to state 18
+    term       go to state 19
+    arith_exp  go to state 75
 
-state 60
-	bool_exp : bool_term T_And . bool_term  (24)
 
-	T_Number  shift 4
-	T_True  shift 5
-	T_False  shift 6
-	T_ID  shift 39
-	T_Not  shift 10
-	T_MN  shift 15
-	T_OP  shift 16
-	.  error
+State 54
 
-	arith_exp  goto 81
-	term  goto 21
-	constant  goto 22
-	bool_term  goto 83
-	bool_factor  goto 32
+   26 bool_exp: arith_exp T_ELT • arith_exp
 
+    T_Number  shift, and go to state 5
+    T_ID      shift, and go to state 40
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 45
 
-state 61
-	arith_exp : arith_exp . T_PL arith_exp  (16)
-	arith_exp : arith_exp . T_MN arith_exp  (17)
-	arith_exp : arith_exp . T_ML arith_exp  (18)
-	arith_exp : arith_exp . T_DV arith_exp  (19)
-	bool_exp : arith_exp . T_LT arith_exp  (23)
-	bool_exp : arith_exp . T_GT arith_exp  (25)
-	bool_exp : arith_exp . T_ELT arith_exp  (26)
-	bool_exp : arith_exp . T_EGT arith_exp  (27)
-	bool_term : arith_exp . T_EQ arith_exp  (30)
-	bool_term : arith_exp . T_EQ bool_term  (31)
-	assign_stmt : T_ID T_EQL arith_exp .  (37)
+    constant   go to state 18
+    term       go to state 19
+    arith_exp  go to state 76
 
-	T_EQ  shift 50
-	T_GT  shift 51
-	T_LT  shift 52
-	T_EGT  shift 53
-	T_ELT  shift 54
-	T_MN  shift 55
-	T_PL  shift 56
-	T_DV  shift 57
-	T_ML  shift 58
-	T_NL  reduce 37
-	T_Elif  reduce 37
-	T_Else  reduce 37
 
+State 55
 
-state 62
-	assign_stmt : T_ID T_EQL bool_exp .  (38)
+   17 arith_exp: arith_exp T_MN • arith_exp
 
-	.  reduce 38
+    T_Number  shift, and go to state 5
+    T_ID      shift, and go to state 40
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 45
 
+    constant   go to state 18
+    term       go to state 19
+    arith_exp  go to state 77
 
-state 63
-	print_stmt : T_Print T_OP term . T_CP  (39)
 
-	T_CP  shift 84
-	.  error
+State 56
 
+   16 arith_exp: arith_exp T_PL • arith_exp
 
-state 64
-	if_stmt : T_If bool_exp T_Cln . start_suite  (46)
-	if_stmt : T_If bool_exp T_Cln . start_suite elif_stmts  (47)
+    T_Number  shift, and go to state 5
+    T_ID      shift, and go to state 40
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 45
 
-	T_Number  shift 4
-	T_True  shift 5
-	T_False  shift 6
-	T_ID  shift 7
-	T_Print  shift 8
-	T_NL  shift 85
-	T_Not  shift 10
-	T_Break  shift 14
-	T_MN  shift 15
-	T_OP  shift 16
-	.  error
+    constant   go to state 18
+    term       go to state 19
+    arith_exp  go to state 78
 
-	start_suite  goto 86
-	arith_exp  goto 19
-	bool_exp  goto 20
-	term  goto 21
-	constant  goto 22
-	basic_stmt  goto 87
-	break_stmt  goto 25
-	print_stmt  goto 26
-	assign_stmt  goto 30
-	bool_term  goto 31
-	bool_factor  goto 32
 
+State 57
 
-state 65
-	while_stmt : T_While bool_exp T_Cln . start_suite  (51)
+   19 arith_exp: arith_exp T_DV • arith_exp
 
-	T_Number  shift 4
-	T_True  shift 5
-	T_False  shift 6
-	T_ID  shift 7
-	T_Print  shift 8
-	T_NL  shift 85
-	T_Not  shift 10
-	T_Break  shift 14
-	T_MN  shift 15
-	T_OP  shift 16
-	.  error
+    T_Number  shift, and go to state 5
+    T_ID      shift, and go to state 40
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 45
 
-	start_suite  goto 88
-	arith_exp  goto 19
-	bool_exp  goto 20
-	term  goto 21
-	constant  goto 22
-	basic_stmt  goto 87
-	break_stmt  goto 25
-	print_stmt  goto 26
-	assign_stmt  goto 30
-	bool_term  goto 31
-	bool_factor  goto 32
+    constant   go to state 18
+    term       go to state 19
+    arith_exp  go to state 79
 
 
-state 66
-	for_stmt : T_For T_ID T_In . T_Range T_OP myrange T_CP T_Cln start_suite  (55)
+State 58
 
-	T_Range  shift 89
-	.  error
+   18 arith_exp: arith_exp T_ML • arith_exp
 
+    T_Number  shift, and go to state 5
+    T_ID      shift, and go to state 40
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 45
 
-state 67
-	arith_exp : arith_exp . T_PL arith_exp  (16)
-	arith_exp : arith_exp . T_MN arith_exp  (17)
-	arith_exp : arith_exp . T_ML arith_exp  (18)
-	arith_exp : arith_exp . T_DV arith_exp  (19)
-	arith_exp : T_OP arith_exp . T_CP  (21)
+    constant   go to state 18
+    term       go to state 19
+    arith_exp  go to state 80
 
-	T_MN  shift 55
-	T_PL  shift 56
-	T_DV  shift 57
-	T_ML  shift 58
-	T_CP  shift 68
-	.  error
 
+State 59
 
-state 68
-	arith_exp : T_OP arith_exp T_CP .  (21)
+   22 bool_exp: bool_term T_Or • bool_term
 
-	.  reduce 21
+    T_Number  shift, and go to state 5
+    T_True    shift, and go to state 6
+    T_False   shift, and go to state 7
+    T_ID      shift, and go to state 40
+    T_Not     shift, and go to state 11
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 17
 
+    constant     go to state 18
+    term         go to state 19
+    arith_exp    go to state 81
+    bool_term    go to state 82
+    bool_factor  go to state 25
 
-state 69
-	bool_factor : T_OP bool_exp T_CP .  (35)
 
-	.  reduce 35
+State 60
 
+   24 bool_exp: bool_term T_And • bool_term
 
-state 70
-	StartParse : finalStatements T_NL $$2 . StartParse  (8)
+    T_Number  shift, and go to state 5
+    T_True    shift, and go to state 6
+    T_False   shift, and go to state 7
+    T_ID      shift, and go to state 40
+    T_Not     shift, and go to state 11
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 17
 
-	error  shift 3
-	T_Number  shift 4
-	T_True  shift 5
-	T_False  shift 6
-	T_ID  shift 7
-	T_Print  shift 8
-	T_NL  shift 9
-	T_Not  shift 10
-	T_If  shift 11
-	T_While  shift 12
-	T_For  shift 13
-	T_Break  shift 14
-	T_MN  shift 15
-	T_OP  shift 16
-	.  error
+    constant     go to state 18
+    term         go to state 19
+    arith_exp    go to state 81
+    bool_term    go to state 83
+    bool_factor  go to state 25
 
-	StartParse  goto 90
-	finalStatements  goto 18
-	arith_exp  goto 19
-	bool_exp  goto 20
-	term  goto 21
-	constant  goto 22
-	basic_stmt  goto 23
-	cmpd_stmt  goto 24
-	break_stmt  goto 25
-	print_stmt  goto 26
-	if_stmt  goto 27
-	while_stmt  goto 28
-	for_stmt  goto 29
-	assign_stmt  goto 30
-	bool_term  goto 31
-	bool_factor  goto 32
-
-
-state 71
-	arith_exp : arith_exp . T_PL arith_exp  (16)
-	arith_exp : arith_exp . T_MN arith_exp  (17)
-	arith_exp : arith_exp . T_ML arith_exp  (18)
-	arith_exp : arith_exp . T_DV arith_exp  (19)
-	bool_term : arith_exp . T_EQ arith_exp  (30)
-	bool_term : arith_exp T_EQ arith_exp .  (30)
-	bool_term : arith_exp . T_EQ bool_term  (31)
-
-	T_EQ  shift 50
-	T_MN  shift 55
-	T_PL  shift 56
-	T_DV  shift 57
-	T_ML  shift 58
-	T_Cln  reduce 30
-	T_NL  reduce 30
-	T_Or  reduce 30
-	T_And  reduce 30
-	T_Elif  reduce 30
-	T_Else  reduce 30
-	T_CP  reduce 30
-
-
-state 72
-	bool_term : arith_exp T_EQ bool_term .  (31)
-
-	.  reduce 31
-
-
-state 73
-	arith_exp : arith_exp . T_PL arith_exp  (16)
-	arith_exp : arith_exp . T_MN arith_exp  (17)
-	arith_exp : arith_exp . T_ML arith_exp  (18)
-	arith_exp : arith_exp . T_DV arith_exp  (19)
-	bool_exp : arith_exp T_GT arith_exp .  (25)
-
-	T_MN  shift 55
-	T_PL  shift 56
-	T_DV  shift 57
-	T_ML  shift 58
-	T_Cln  reduce 25
-	T_NL  reduce 25
-	T_Elif  reduce 25
-	T_Else  reduce 25
-	T_CP  reduce 25
-
-
-state 74
-	arith_exp : arith_exp . T_PL arith_exp  (16)
-	arith_exp : arith_exp . T_MN arith_exp  (17)
-	arith_exp : arith_exp . T_ML arith_exp  (18)
-	arith_exp : arith_exp . T_DV arith_exp  (19)
-	bool_exp : arith_exp T_LT arith_exp .  (23)
-
-	T_MN  shift 55
-	T_PL  shift 56
-	T_DV  shift 57
-	T_ML  shift 58
-	T_Cln  reduce 23
-	T_NL  reduce 23
-	T_Elif  reduce 23
-	T_Else  reduce 23
-	T_CP  reduce 23
-
-
-state 75
-	arith_exp : arith_exp . T_PL arith_exp  (16)
-	arith_exp : arith_exp . T_MN arith_exp  (17)
-	arith_exp : arith_exp . T_ML arith_exp  (18)
-	arith_exp : arith_exp . T_DV arith_exp  (19)
-	bool_exp : arith_exp T_EGT arith_exp .  (27)
-
-	T_MN  shift 55
-	T_PL  shift 56
-	T_DV  shift 57
-	T_ML  shift 58
-	T_Cln  reduce 27
-	T_NL  reduce 27
-	T_Elif  reduce 27
-	T_Else  reduce 27
-	T_CP  reduce 27
-
-
-state 76
-	arith_exp : arith_exp . T_PL arith_exp  (16)
-	arith_exp : arith_exp . T_MN arith_exp  (17)
-	arith_exp : arith_exp . T_ML arith_exp  (18)
-	arith_exp : arith_exp . T_DV arith_exp  (19)
-	bool_exp : arith_exp T_ELT arith_exp .  (26)
-
-	T_MN  shift 55
-	T_PL  shift 56
-	T_DV  shift 57
-	T_ML  shift 58
-	T_Cln  reduce 26
-	T_NL  reduce 26
-	T_Elif  reduce 26
-	T_Else  reduce 26
-	T_CP  reduce 26
-
-
-state 77
-	arith_exp : arith_exp . T_PL arith_exp  (16)
-	arith_exp : arith_exp . T_MN arith_exp  (17)
-	arith_exp : arith_exp T_MN arith_exp .  (17)
-	arith_exp : arith_exp . T_ML arith_exp  (18)
-	arith_exp : arith_exp . T_DV arith_exp  (19)
-
-	T_DV  shift 57
-	T_ML  shift 58
-	T_Cln  reduce 17
-	T_NL  reduce 17
-	T_EQ  reduce 17
-	T_GT  reduce 17
-	T_LT  reduce 17
-	T_EGT  reduce 17
-	T_ELT  reduce 17
-	T_Or  reduce 17
-	T_And  reduce 17
-	T_Elif  reduce 17
-	T_Else  reduce 17
-	T_MN  reduce 17
-	T_PL  reduce 17
-	T_CP  reduce 17
-
-
-state 78
-	arith_exp : arith_exp . T_PL arith_exp  (16)
-	arith_exp : arith_exp T_PL arith_exp .  (16)
-	arith_exp : arith_exp . T_MN arith_exp  (17)
-	arith_exp : arith_exp . T_ML arith_exp  (18)
-	arith_exp : arith_exp . T_DV arith_exp  (19)
 
-	T_DV  shift 57
-	T_ML  shift 58
-	T_Cln  reduce 16
-	T_NL  reduce 16
-	T_EQ  reduce 16
-	T_GT  reduce 16
-	T_LT  reduce 16
-	T_EGT  reduce 16
-	T_ELT  reduce 16
-	T_Or  reduce 16
-	T_And  reduce 16
-	T_Elif  reduce 16
-	T_Else  reduce 16
-	T_MN  reduce 16
-	T_PL  reduce 16
-	T_CP  reduce 16
+State 61
 
+    8 StartParse: finalStatements T_NL • $@2 StartParse
+    9           | finalStatements T_NL •
 
-state 79
-	arith_exp : arith_exp . T_PL arith_exp  (16)
-	arith_exp : arith_exp . T_MN arith_exp  (17)
-	arith_exp : arith_exp . T_ML arith_exp  (18)
-	arith_exp : arith_exp . T_DV arith_exp  (19)
-	arith_exp : arith_exp T_DV arith_exp .  (19)
+    T_EndOfFile  reduce using rule 9 (StartParse)
+    $default     reduce using rule 7 ($@2)
 
-	.  reduce 19
+    $@2  go to state 84
 
 
-state 80
-	arith_exp : arith_exp . T_PL arith_exp  (16)
-	arith_exp : arith_exp . T_MN arith_exp  (17)
-	arith_exp : arith_exp . T_ML arith_exp  (18)
-	arith_exp : arith_exp T_ML arith_exp .  (18)
-	arith_exp : arith_exp . T_DV arith_exp  (19)
+State 62
 
-	.  reduce 18
+   16 arith_exp: arith_exp • T_PL arith_exp
+   17          | arith_exp • T_MN arith_exp
+   18          | arith_exp • T_ML arith_exp
+   19          | arith_exp • T_DV arith_exp
+   23 bool_exp: arith_exp • T_LT arith_exp
+   25         | arith_exp • T_GT arith_exp
+   26         | arith_exp • T_ELT arith_exp
+   27         | arith_exp • T_EGT arith_exp
+   30 bool_term: arith_exp • T_EQ arith_exp
+   31          | arith_exp • T_EQ bool_term
+   37 assign_stmt: T_ID T_EQL arith_exp •
 
+    T_EQ   shift, and go to state 50
+    T_GT   shift, and go to state 51
+    T_LT   shift, and go to state 52
+    T_EGT  shift, and go to state 53
+    T_ELT  shift, and go to state 54
+    T_MN   shift, and go to state 55
+    T_PL   shift, and go to state 56
+    T_DV   shift, and go to state 57
+    T_ML   shift, and go to state 58
 
-state 81
-	arith_exp : arith_exp . T_PL arith_exp  (16)
-	arith_exp : arith_exp . T_MN arith_exp  (17)
-	arith_exp : arith_exp . T_ML arith_exp  (18)
-	arith_exp : arith_exp . T_DV arith_exp  (19)
-	bool_term : arith_exp . T_EQ arith_exp  (30)
-	bool_term : arith_exp . T_EQ bool_term  (31)
+    $default  reduce using rule 37 (assign_stmt)
 
-	T_EQ  shift 50
-	T_MN  shift 55
-	T_PL  shift 56
-	T_DV  shift 57
-	T_ML  shift 58
-	.  error
 
+State 63
 
-state 82
-	bool_exp : bool_term T_Or bool_term .  (22)
+   38 assign_stmt: T_ID T_EQL bool_exp •
 
-	.  reduce 22
+    $default  reduce using rule 38 (assign_stmt)
 
 
-state 83
-	bool_exp : bool_term T_And bool_term .  (24)
+State 64
 
-	.  reduce 24
+   39 print_stmt: T_Print T_OP term • T_CP
 
+    T_CP  shift, and go to state 85
 
-state 84
-	print_stmt : T_Print T_OP term T_CP .  (39)
 
-	.  reduce 39
+State 65
 
-
-state 85
-	start_suite : T_NL . $$3 finalStatements suite  (58)
-	$$3 : .  (57)
+   46 if_stmt: T_If bool_exp T_Cln • start_suite
+   47        | T_If bool_exp T_Cln • start_suite elif_stmts
 
-	.  reduce 57
+    T_Number  shift, and go to state 5
+    T_True    shift, and go to state 6
+    T_False   shift, and go to state 7
+    T_ID      shift, and go to state 8
+    T_Print   shift, and go to state 9
+    T_NL      shift, and go to state 86
+    T_Not     shift, and go to state 11
+    T_Break   shift, and go to state 15
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 17
 
-	$$3  goto 91
+    constant     go to state 18
+    term         go to state 19
+    basic_stmt   go to state 87
+    arith_exp    go to state 22
+    bool_exp     go to state 23
+    bool_term    go to state 24
+    bool_factor  go to state 25
+    break_stmt   go to state 26
+    assign_stmt  go to state 27
+    print_stmt   go to state 28
+    start_suite  go to state 88
 
 
-86: shift/reduce conflict (shift 92, reduce 46) on T_Elif
-86: shift/reduce conflict (shift 93, reduce 46) on T_Else
-state 86
-	if_stmt : T_If bool_exp T_Cln start_suite .  (46)
-	if_stmt : T_If bool_exp T_Cln start_suite . elif_stmts  (47)
+State 66
 
-	T_Elif  shift 92
-	T_Else  shift 93
-	T_NL  reduce 46
+   51 while_stmt: T_While bool_exp T_Cln • start_suite
 
-	elif_stmts  goto 94
-	else_stmt  goto 95
+    T_Number  shift, and go to state 5
+    T_True    shift, and go to state 6
+    T_False   shift, and go to state 7
+    T_ID      shift, and go to state 8
+    T_Print   shift, and go to state 9
+    T_NL      shift, and go to state 86
+    T_Not     shift, and go to state 11
+    T_Break   shift, and go to state 15
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 17
 
+    constant     go to state 18
+    term         go to state 19
+    basic_stmt   go to state 87
+    arith_exp    go to state 22
+    bool_exp     go to state 23
+    bool_term    go to state 24
+    bool_factor  go to state 25
+    break_stmt   go to state 26
+    assign_stmt  go to state 27
+    print_stmt   go to state 28
+    start_suite  go to state 89
 
-state 87
-	start_suite : basic_stmt .  (56)
 
-	.  reduce 56
+State 67
 
+   55 for_stmt: T_For T_ID T_In • T_Range T_OP myrange T_CP T_Cln start_suite
 
-state 88
-	while_stmt : T_While bool_exp T_Cln start_suite .  (51)
+    T_Range  shift, and go to state 90
 
-	.  reduce 51
 
+State 68
 
-state 89
-	for_stmt : T_For T_ID T_In T_Range . T_OP myrange T_CP T_Cln start_suite  (55)
+   16 arith_exp: arith_exp • T_PL arith_exp
+   17          | arith_exp • T_MN arith_exp
+   18          | arith_exp • T_ML arith_exp
+   19          | arith_exp • T_DV arith_exp
+   21          | T_OP arith_exp • T_CP
 
-	T_OP  shift 96
-	.  error
+    T_MN  shift, and go to state 55
+    T_PL  shift, and go to state 56
+    T_DV  shift, and go to state 57
+    T_ML  shift, and go to state 58
+    T_CP  shift, and go to state 69
 
 
-state 90
-	StartParse : finalStatements T_NL $$2 StartParse .  (8)
+State 69
 
-	.  reduce 8
+   21 arith_exp: T_OP arith_exp T_CP •
 
+    $default  reduce using rule 21 (arith_exp)
 
-state 91
-	start_suite : T_NL $$3 . finalStatements suite  (58)
 
-	error  shift 3
-	T_Number  shift 4
-	T_True  shift 5
-	T_False  shift 6
-	T_ID  shift 7
-	T_Print  shift 8
-	T_Not  shift 10
-	T_If  shift 11
-	T_While  shift 12
-	T_For  shift 13
-	T_Break  shift 14
-	T_MN  shift 15
-	T_OP  shift 16
-	.  error
+State 70
 
-	finalStatements  goto 97
-	arith_exp  goto 19
-	bool_exp  goto 20
-	term  goto 21
-	constant  goto 22
-	basic_stmt  goto 23
-	cmpd_stmt  goto 24
-	break_stmt  goto 25
-	print_stmt  goto 26
-	if_stmt  goto 27
-	while_stmt  goto 28
-	for_stmt  goto 29
-	assign_stmt  goto 30
-	bool_term  goto 31
-	bool_factor  goto 32
+   35 bool_factor: T_OP bool_exp T_CP •
 
+    $default  reduce using rule 35 (bool_factor)
 
-state 92
-	elif_stmts : T_Elif . bool_exp T_Cln start_suite elif_stmts  (49)
 
-	T_Number  shift 4
-	T_True  shift 5
-	T_False  shift 6
-	T_ID  shift 39
-	T_Not  shift 10
-	T_MN  shift 15
-	T_OP  shift 16
-	.  error
+State 71
 
-	arith_exp  goto 40
-	bool_exp  goto 98
-	term  goto 21
-	constant  goto 22
-	bool_term  goto 31
-	bool_factor  goto 32
+   16 arith_exp: arith_exp • T_PL arith_exp
+   17          | arith_exp • T_MN arith_exp
+   18          | arith_exp • T_ML arith_exp
+   19          | arith_exp • T_DV arith_exp
+   30 bool_term: arith_exp • T_EQ arith_exp
+   30          | arith_exp T_EQ arith_exp •
+   31          | arith_exp • T_EQ bool_term
 
+    T_EQ  shift, and go to state 50
+    T_MN  shift, and go to state 55
+    T_PL  shift, and go to state 56
+    T_DV  shift, and go to state 57
+    T_ML  shift, and go to state 58
 
-state 93
-	else_stmt : T_Else . T_Cln start_suite  (50)
+    $default  reduce using rule 30 (bool_term)
 
-	T_Cln  shift 99
-	.  error
 
+State 72
 
-state 94
-	if_stmt : T_If bool_exp T_Cln start_suite elif_stmts .  (47)
+   31 bool_term: arith_exp T_EQ bool_term •
 
-	.  reduce 47
+    $default  reduce using rule 31 (bool_term)
 
 
-state 95
-	elif_stmts : else_stmt .  (48)
+State 73
 
-	.  reduce 48
+   16 arith_exp: arith_exp • T_PL arith_exp
+   17          | arith_exp • T_MN arith_exp
+   18          | arith_exp • T_ML arith_exp
+   19          | arith_exp • T_DV arith_exp
+   25 bool_exp: arith_exp T_GT arith_exp •
 
+    T_MN  shift, and go to state 55
+    T_PL  shift, and go to state 56
+    T_DV  shift, and go to state 57
+    T_ML  shift, and go to state 58
 
-state 96
-	for_stmt : T_For T_ID T_In T_Range T_OP . myrange T_CP T_Cln start_suite  (55)
+    $default  reduce using rule 25 (bool_exp)
 
-	T_Number  shift 4
-	T_ID  shift 39
-	.  error
 
-	term  goto 100
-	constant  goto 22
-	myrange  goto 101
+State 74
 
+   16 arith_exp: arith_exp • T_PL arith_exp
+   17          | arith_exp • T_MN arith_exp
+   18          | arith_exp • T_ML arith_exp
+   19          | arith_exp • T_DV arith_exp
+   23 bool_exp: arith_exp T_LT arith_exp •
 
-state 97
-	start_suite : T_NL $$3 finalStatements . suite  (58)
+    T_MN  shift, and go to state 55
+    T_PL  shift, and go to state 56
+    T_DV  shift, and go to state 57
+    T_ML  shift, and go to state 58
 
-	T_NL  shift 102
-	.  error
+    $default  reduce using rule 23 (bool_exp)
 
-	suite  goto 103
 
+State 75
 
-state 98
-	elif_stmts : T_Elif bool_exp . T_Cln start_suite elif_stmts  (49)
+   16 arith_exp: arith_exp • T_PL arith_exp
+   17          | arith_exp • T_MN arith_exp
+   18          | arith_exp • T_ML arith_exp
+   19          | arith_exp • T_DV arith_exp
+   27 bool_exp: arith_exp T_EGT arith_exp •
 
-	T_Cln  shift 104
-	.  error
+    T_MN  shift, and go to state 55
+    T_PL  shift, and go to state 56
+    T_DV  shift, and go to state 57
+    T_ML  shift, and go to state 58
 
+    $default  reduce using rule 27 (bool_exp)
 
-state 99
-	else_stmt : T_Else T_Cln . start_suite  (50)
 
-	T_Number  shift 4
-	T_True  shift 5
-	T_False  shift 6
-	T_ID  shift 7
-	T_Print  shift 8
-	T_NL  shift 85
-	T_Not  shift 10
-	T_Break  shift 14
-	T_MN  shift 15
-	T_OP  shift 16
-	.  error
-
-	start_suite  goto 105
-	arith_exp  goto 19
-	bool_exp  goto 20
-	term  goto 21
-	constant  goto 22
-	basic_stmt  goto 87
-	break_stmt  goto 25
-	print_stmt  goto 26
-	assign_stmt  goto 30
-	bool_term  goto 31
-	bool_factor  goto 32
+State 76
 
+   16 arith_exp: arith_exp • T_PL arith_exp
+   17          | arith_exp • T_MN arith_exp
+   18          | arith_exp • T_ML arith_exp
+   19          | arith_exp • T_DV arith_exp
+   26 bool_exp: arith_exp T_ELT arith_exp •
 
-state 100
-	myrange : term .  (52)
-	myrange : term . T_Comma term  (53)
-	myrange : term . T_Comma term T_Comma term  (54)
+    T_MN  shift, and go to state 55
+    T_PL  shift, and go to state 56
+    T_DV  shift, and go to state 57
+    T_ML  shift, and go to state 58
 
-	T_Comma  shift 106
-	T_CP  reduce 52
+    $default  reduce using rule 26 (bool_exp)
 
 
-state 101
-	for_stmt : T_For T_ID T_In T_Range T_OP myrange . T_CP T_Cln start_suite  (55)
+State 77
 
-	T_CP  shift 107
-	.  error
+   16 arith_exp: arith_exp • T_PL arith_exp
+   17          | arith_exp • T_MN arith_exp
+   17          | arith_exp T_MN arith_exp •
+   18          | arith_exp • T_ML arith_exp
+   19          | arith_exp • T_DV arith_exp
 
+    T_DV  shift, and go to state 57
+    T_ML  shift, and go to state 58
 
-state 102
-	suite : T_NL . finalStatements suite  (59)
-	suite : T_NL . end_suite  (60)
-	end_suite : .  (65)
+    $default  reduce using rule 17 (arith_exp)
 
-	error  shift 3
-	T_Number  shift 4
-	T_True  shift 5
-	T_False  shift 6
-	T_ID  shift 7
-	T_Print  shift 8
-	T_Not  shift 10
-	T_If  shift 11
-	T_While  shift 12
-	T_For  shift 13
-	T_Break  shift 14
-	T_MN  shift 15
-	T_OP  shift 16
-	T_CB  shift 108
-	T_NL  reduce 65
-	T_Elif  reduce 65
-	T_Else  reduce 65
-
-	end_suite  goto 109
-	finalStatements  goto 110
-	arith_exp  goto 19
-	bool_exp  goto 20
-	term  goto 21
-	constant  goto 22
-	basic_stmt  goto 23
-	cmpd_stmt  goto 24
-	break_stmt  goto 25
-	print_stmt  goto 26
-	if_stmt  goto 27
-	while_stmt  goto 28
-	for_stmt  goto 29
-	assign_stmt  goto 30
-	bool_term  goto 31
-	bool_factor  goto 32
 
+State 78
 
-state 103
-	start_suite : T_NL $$3 finalStatements suite .  (58)
+   16 arith_exp: arith_exp • T_PL arith_exp
+   16          | arith_exp T_PL arith_exp •
+   17          | arith_exp • T_MN arith_exp
+   18          | arith_exp • T_ML arith_exp
+   19          | arith_exp • T_DV arith_exp
 
-	.  reduce 58
+    T_DV  shift, and go to state 57
+    T_ML  shift, and go to state 58
 
+    $default  reduce using rule 16 (arith_exp)
 
-state 104
-	elif_stmts : T_Elif bool_exp T_Cln . start_suite elif_stmts  (49)
 
-	T_Number  shift 4
-	T_True  shift 5
-	T_False  shift 6
-	T_ID  shift 7
-	T_Print  shift 8
-	T_NL  shift 85
-	T_Not  shift 10
-	T_Break  shift 14
-	T_MN  shift 15
-	T_OP  shift 16
-	.  error
+State 79
 
-	start_suite  goto 111
-	arith_exp  goto 19
-	bool_exp  goto 20
-	term  goto 21
-	constant  goto 22
-	basic_stmt  goto 87
-	break_stmt  goto 25
-	print_stmt  goto 26
-	assign_stmt  goto 30
-	bool_term  goto 31
-	bool_factor  goto 32
+   16 arith_exp: arith_exp • T_PL arith_exp
+   17          | arith_exp • T_MN arith_exp
+   18          | arith_exp • T_ML arith_exp
+   19          | arith_exp • T_DV arith_exp
+   19          | arith_exp T_DV arith_exp •
 
+    $default  reduce using rule 19 (arith_exp)
 
-state 105
-	else_stmt : T_Else T_Cln start_suite .  (50)
 
-	.  reduce 50
+State 80
 
+   16 arith_exp: arith_exp • T_PL arith_exp
+   17          | arith_exp • T_MN arith_exp
+   18          | arith_exp • T_ML arith_exp
+   18          | arith_exp T_ML arith_exp •
+   19          | arith_exp • T_DV arith_exp
 
-state 106
-	myrange : term T_Comma . term  (53)
-	myrange : term T_Comma . term T_Comma term  (54)
+    $default  reduce using rule 18 (arith_exp)
 
-	T_Number  shift 4
-	T_ID  shift 39
-	.  error
 
-	term  goto 112
-	constant  goto 22
+State 81
 
+   16 arith_exp: arith_exp • T_PL arith_exp
+   17          | arith_exp • T_MN arith_exp
+   18          | arith_exp • T_ML arith_exp
+   19          | arith_exp • T_DV arith_exp
+   30 bool_term: arith_exp • T_EQ arith_exp
+   31          | arith_exp • T_EQ bool_term
 
-state 107
-	for_stmt : T_For T_ID T_In T_Range T_OP myrange T_CP . T_Cln start_suite  (55)
+    T_EQ  shift, and go to state 50
+    T_MN  shift, and go to state 55
+    T_PL  shift, and go to state 56
+    T_DV  shift, and go to state 57
+    T_ML  shift, and go to state 58
 
-	T_Cln  shift 113
-	.  error
 
+State 82
 
-state 108
-	end_suite : T_CB . $$4 finalStatements  (62)
-	end_suite : T_CB . $$5  (64)
-	$$4 : .  (61)
-	$$5 : .  (63)
+   22 bool_exp: bool_term T_Or bool_term •
 
-	error  reduce 61
-	T_Number  reduce 61
-	T_True  reduce 61
-	T_False  reduce 61
-	T_ID  reduce 61
-	T_Print  reduce 61
-	T_NL  reduce 63
-	T_Not  reduce 61
-	T_If  reduce 61
-	T_Elif  reduce 63
-	T_While  reduce 61
-	T_For  reduce 61
-	T_Else  reduce 63
-	T_Break  reduce 61
-	T_MN  reduce 61
-	T_OP  reduce 61
-
-	$$4  goto 114
-	$$5  goto 115
-
-
-state 109
-	suite : T_NL end_suite .  (60)
-
-	.  reduce 60
+    $default  reduce using rule 22 (bool_exp)
 
 
-state 110
-	suite : T_NL finalStatements . suite  (59)
+State 83
 
-	T_NL  shift 102
-	.  error
+   24 bool_exp: bool_term T_And bool_term •
 
-	suite  goto 116
+    $default  reduce using rule 24 (bool_exp)
 
 
-state 111
-	elif_stmts : T_Elif bool_exp T_Cln start_suite . elif_stmts  (49)
+State 84
 
-	T_Elif  shift 92
-	T_Else  shift 93
-	.  error
+    8 StartParse: finalStatements T_NL $@2 • StartParse
 
-	elif_stmts  goto 117
-	else_stmt  goto 95
+    error     shift, and go to state 4
+    T_Number  shift, and go to state 5
+    T_True    shift, and go to state 6
+    T_False   shift, and go to state 7
+    T_ID      shift, and go to state 8
+    T_Print   shift, and go to state 9
+    T_NL      shift, and go to state 10
+    T_Not     shift, and go to state 11
+    T_If      shift, and go to state 12
+    T_While   shift, and go to state 13
+    T_For     shift, and go to state 14
+    T_Break   shift, and go to state 15
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 17
 
+    constant         go to state 18
+    term             go to state 19
+    StartParse       go to state 91
+    basic_stmt       go to state 21
+    arith_exp        go to state 22
+    bool_exp         go to state 23
+    bool_term        go to state 24
+    bool_factor      go to state 25
+    break_stmt       go to state 26
+    assign_stmt      go to state 27
+    print_stmt       go to state 28
+    finalStatements  go to state 29
+    cmpd_stmt        go to state 30
+    if_stmt          go to state 31
+    while_stmt       go to state 32
+    for_stmt         go to state 33
 
-state 112
-	myrange : term T_Comma term .  (53)
-	myrange : term T_Comma term . T_Comma term  (54)
 
-	T_Comma  shift 118
-	T_CP  reduce 53
+State 85
 
+   39 print_stmt: T_Print T_OP term T_CP •
 
-state 113
-	for_stmt : T_For T_ID T_In T_Range T_OP myrange T_CP T_Cln . start_suite  (55)
+    $default  reduce using rule 39 (print_stmt)
 
-	T_Number  shift 4
-	T_True  shift 5
-	T_False  shift 6
-	T_ID  shift 7
-	T_Print  shift 8
-	T_NL  shift 85
-	T_Not  shift 10
-	T_Break  shift 14
-	T_MN  shift 15
-	T_OP  shift 16
-	.  error
 
-	start_suite  goto 119
-	arith_exp  goto 19
-	bool_exp  goto 20
-	term  goto 21
-	constant  goto 22
-	basic_stmt  goto 87
-	break_stmt  goto 25
-	print_stmt  goto 26
-	assign_stmt  goto 30
-	bool_term  goto 31
-	bool_factor  goto 32
+State 86
 
+   58 start_suite: T_NL • $@3 finalStatements suite
 
-state 114
-	end_suite : T_CB $$4 . finalStatements  (62)
+    $default  reduce using rule 57 ($@3)
 
-	error  shift 3
-	T_Number  shift 4
-	T_True  shift 5
-	T_False  shift 6
-	T_ID  shift 7
-	T_Print  shift 8
-	T_Not  shift 10
-	T_If  shift 11
-	T_While  shift 12
-	T_For  shift 13
-	T_Break  shift 14
-	T_MN  shift 15
-	T_OP  shift 16
-	.  error
+    $@3  go to state 92
 
-	finalStatements  goto 120
-	arith_exp  goto 19
-	bool_exp  goto 20
-	term  goto 21
-	constant  goto 22
-	basic_stmt  goto 23
-	cmpd_stmt  goto 24
-	break_stmt  goto 25
-	print_stmt  goto 26
-	if_stmt  goto 27
-	while_stmt  goto 28
-	for_stmt  goto 29
-	assign_stmt  goto 30
-	bool_term  goto 31
-	bool_factor  goto 32
-
-
-state 115
-	end_suite : T_CB $$5 .  (64)
-
-	.  reduce 64
-
-
-state 116
-	suite : T_NL finalStatements suite .  (59)
-
-	.  reduce 59
-
-
-state 117
-	elif_stmts : T_Elif bool_exp T_Cln start_suite elif_stmts .  (49)
-
-	.  reduce 49
-
-
-state 118
-	myrange : term T_Comma term T_Comma . term  (54)
-
-	T_Number  shift 4
-	T_ID  shift 39
-	.  error
-
-	term  goto 121
-	constant  goto 22
-
-
-state 119
-	for_stmt : T_For T_ID T_In T_Range T_OP myrange T_CP T_Cln start_suite .  (55)
-
-	.  reduce 55
-
-
-state 120
-	end_suite : T_CB $$4 finalStatements .  (62)
-
-	.  reduce 62
-
-
-state 121
-	myrange : term T_Comma term T_Comma term .  (54)
-
-	.  reduce 54
-
-
-State 86 contains 2 shift/reduce conflicts.
-
-
-44 terminals, 29 nonterminals
-66 grammar rules, 122 states
-
-grammar parser grammar
-symbol# value# symbol
-     0      0  $end
-     1    256  error
-     2    257  T_EndOfFile
-     3    258  T_Return
-     4    259  T_Number
-     5    260  T_True
-     6    261  T_False
-     7    262  T_ID
-     8    263  T_Print
-     9    264  T_Range
-    10    265  T_Cln
-    11    266  T_NL
-    12    267  T_EQL
-    13    268  T_NEQ
-    14    269  T_EQ
-    15    270  T_GT
-    16    271  T_LT
-    17    272  T_EGT
-    18    273  T_ELT
-    19    274  T_Or
-    20    275  T_And
-    21    276  T_Not
-    22    277  T_In
-    23    278  ID
-    24    279  ND
-    25    280  DD
-    26    281  T_String
-    27    282  T_If
-    28    283  T_Elif
-    29    284  T_While
-    30    285  T_For
-    31    286  T_Else
-    32    287  T_Break
-    33    288  T_MN
-    34    289  T_PL
-    35    290  T_DV
-    36    291  T_ML
-    37    292  T_OP
-    38    293  T_CP
-    39    294  T_OB
-    40    295  T_CB
-    41    296  T_Def
-    42    297  T_Comma
-    43    298  T_List
-    44    299  $accept
-    45    300  StartDebugger
-    46    301  start_suite
-    47    302  suite
-    48    303  end_suite
-    49    304  StartParse
-    50    305  finalStatements
-    51    306  arith_exp
-    52    307  bool_exp
-    53    308  term
-    54    309  constant
-    55    310  basic_stmt
-    56    311  cmpd_stmt
-    57    312  break_stmt
-    58    313  print_stmt
-    59    314  if_stmt
-    60    315  elif_stmts
-    61    316  else_stmt
-    62    317  while_stmt
-    63    318  for_stmt
-    64    319  myrange
-    65    320  assign_stmt
-    66    321  bool_term
-    67    322  bool_factor
-    68    323  $$1
-    69    324  $$2
-    70    325  $$3
-    71    326  $$4
-    72    327  $$5
+
+State 87
+
+   56 start_suite: basic_stmt •
+
+    $default  reduce using rule 56 (start_suite)
+
+
+State 88
+
+   46 if_stmt: T_If bool_exp T_Cln start_suite •
+   47        | T_If bool_exp T_Cln start_suite • elif_stmts
+
+    T_Elif  shift, and go to state 93
+    T_Else  shift, and go to state 94
+
+    T_Elif    [reduce using rule 46 (if_stmt)]
+    T_Else    [reduce using rule 46 (if_stmt)]
+    $default  reduce using rule 46 (if_stmt)
+
+    elif_stmts  go to state 95
+    else_stmt   go to state 96
+
+
+State 89
+
+   51 while_stmt: T_While bool_exp T_Cln start_suite •
+
+    $default  reduce using rule 51 (while_stmt)
+
+
+State 90
+
+   55 for_stmt: T_For T_ID T_In T_Range • T_OP myrange T_CP T_Cln start_suite
+
+    T_OP  shift, and go to state 97
+
+
+State 91
+
+    8 StartParse: finalStatements T_NL $@2 StartParse •
+
+    $default  reduce using rule 8 (StartParse)
+
+
+State 92
+
+   58 start_suite: T_NL $@3 • finalStatements suite
+
+    error     shift, and go to state 4
+    T_Number  shift, and go to state 5
+    T_True    shift, and go to state 6
+    T_False   shift, and go to state 7
+    T_ID      shift, and go to state 8
+    T_Print   shift, and go to state 9
+    T_Not     shift, and go to state 11
+    T_If      shift, and go to state 12
+    T_While   shift, and go to state 13
+    T_For     shift, and go to state 14
+    T_Break   shift, and go to state 15
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 17
+
+    constant         go to state 18
+    term             go to state 19
+    basic_stmt       go to state 21
+    arith_exp        go to state 22
+    bool_exp         go to state 23
+    bool_term        go to state 24
+    bool_factor      go to state 25
+    break_stmt       go to state 26
+    assign_stmt      go to state 27
+    print_stmt       go to state 28
+    finalStatements  go to state 98
+    cmpd_stmt        go to state 30
+    if_stmt          go to state 31
+    while_stmt       go to state 32
+    for_stmt         go to state 33
+
+
+State 93
+
+   49 elif_stmts: T_Elif • bool_exp T_Cln start_suite elif_stmts
+
+    T_Number  shift, and go to state 5
+    T_True    shift, and go to state 6
+    T_False   shift, and go to state 7
+    T_ID      shift, and go to state 40
+    T_Not     shift, and go to state 11
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 17
+
+    constant     go to state 18
+    term         go to state 19
+    arith_exp    go to state 41
+    bool_exp     go to state 99
+    bool_term    go to state 24
+    bool_factor  go to state 25
+
+
+State 94
+
+   50 else_stmt: T_Else • T_Cln start_suite
+
+    T_Cln  shift, and go to state 100
+
+
+State 95
+
+   47 if_stmt: T_If bool_exp T_Cln start_suite elif_stmts •
+
+    $default  reduce using rule 47 (if_stmt)
+
+
+State 96
+
+   48 elif_stmts: else_stmt •
+
+    $default  reduce using rule 48 (elif_stmts)
+
+
+State 97
+
+   55 for_stmt: T_For T_ID T_In T_Range T_OP • myrange T_CP T_Cln start_suite
+
+    T_Number  shift, and go to state 5
+    T_ID      shift, and go to state 40
+
+    constant  go to state 18
+    term      go to state 101
+    myrange   go to state 102
+
+
+State 98
+
+   58 start_suite: T_NL $@3 finalStatements • suite
+
+    T_NL  shift, and go to state 103
+
+    suite  go to state 104
+
+
+State 99
+
+   49 elif_stmts: T_Elif bool_exp • T_Cln start_suite elif_stmts
+
+    T_Cln  shift, and go to state 105
+
+
+State 100
+
+   50 else_stmt: T_Else T_Cln • start_suite
+
+    T_Number  shift, and go to state 5
+    T_True    shift, and go to state 6
+    T_False   shift, and go to state 7
+    T_ID      shift, and go to state 8
+    T_Print   shift, and go to state 9
+    T_NL      shift, and go to state 86
+    T_Not     shift, and go to state 11
+    T_Break   shift, and go to state 15
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 17
+
+    constant     go to state 18
+    term         go to state 19
+    basic_stmt   go to state 87
+    arith_exp    go to state 22
+    bool_exp     go to state 23
+    bool_term    go to state 24
+    bool_factor  go to state 25
+    break_stmt   go to state 26
+    assign_stmt  go to state 27
+    print_stmt   go to state 28
+    start_suite  go to state 106
+
+
+State 101
+
+   52 myrange: term •
+   53        | term • T_Comma term
+   54        | term • T_Comma term T_Comma term
+
+    T_Comma  shift, and go to state 107
+
+    $default  reduce using rule 52 (myrange)
+
+
+State 102
+
+   55 for_stmt: T_For T_ID T_In T_Range T_OP myrange • T_CP T_Cln start_suite
+
+    T_CP  shift, and go to state 108
+
+
+State 103
+
+   59 suite: T_NL • finalStatements suite
+   60      | T_NL • end_suite
+
+    error     shift, and go to state 4
+    T_Number  shift, and go to state 5
+    T_True    shift, and go to state 6
+    T_False   shift, and go to state 7
+    T_ID      shift, and go to state 8
+    T_Print   shift, and go to state 9
+    T_Not     shift, and go to state 11
+    T_If      shift, and go to state 12
+    T_While   shift, and go to state 13
+    T_For     shift, and go to state 14
+    T_Break   shift, and go to state 15
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 17
+    T_CB      shift, and go to state 109
+
+    T_NL    reduce using rule 65 (end_suite)
+    T_Elif  reduce using rule 65 (end_suite)
+    T_Else  reduce using rule 65 (end_suite)
+
+    constant         go to state 18
+    term             go to state 19
+    basic_stmt       go to state 21
+    arith_exp        go to state 22
+    bool_exp         go to state 23
+    bool_term        go to state 24
+    bool_factor      go to state 25
+    break_stmt       go to state 26
+    assign_stmt      go to state 27
+    print_stmt       go to state 28
+    finalStatements  go to state 110
+    cmpd_stmt        go to state 30
+    if_stmt          go to state 31
+    while_stmt       go to state 32
+    for_stmt         go to state 33
+    end_suite        go to state 111
+
+
+State 104
+
+   58 start_suite: T_NL $@3 finalStatements suite •
+
+    $default  reduce using rule 58 (start_suite)
+
+
+State 105
+
+   49 elif_stmts: T_Elif bool_exp T_Cln • start_suite elif_stmts
+
+    T_Number  shift, and go to state 5
+    T_True    shift, and go to state 6
+    T_False   shift, and go to state 7
+    T_ID      shift, and go to state 8
+    T_Print   shift, and go to state 9
+    T_NL      shift, and go to state 86
+    T_Not     shift, and go to state 11
+    T_Break   shift, and go to state 15
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 17
+
+    constant     go to state 18
+    term         go to state 19
+    basic_stmt   go to state 87
+    arith_exp    go to state 22
+    bool_exp     go to state 23
+    bool_term    go to state 24
+    bool_factor  go to state 25
+    break_stmt   go to state 26
+    assign_stmt  go to state 27
+    print_stmt   go to state 28
+    start_suite  go to state 112
+
+
+State 106
+
+   50 else_stmt: T_Else T_Cln start_suite •
+
+    $default  reduce using rule 50 (else_stmt)
+
+
+State 107
+
+   53 myrange: term T_Comma • term
+   54        | term T_Comma • term T_Comma term
+
+    T_Number  shift, and go to state 5
+    T_ID      shift, and go to state 40
+
+    constant  go to state 18
+    term      go to state 113
+
+
+State 108
+
+   55 for_stmt: T_For T_ID T_In T_Range T_OP myrange T_CP • T_Cln start_suite
+
+    T_Cln  shift, and go to state 114
+
+
+State 109
+
+   62 end_suite: T_CB • $@4 finalStatements
+   64          | T_CB • $@5
+
+    T_NL      reduce using rule 63 ($@5)
+    T_Elif    reduce using rule 63 ($@5)
+    T_Else    reduce using rule 63 ($@5)
+    $default  reduce using rule 61 ($@4)
+
+    $@4  go to state 115
+    $@5  go to state 116
+
+
+State 110
+
+   59 suite: T_NL finalStatements • suite
+
+    T_NL  shift, and go to state 103
+
+    suite  go to state 117
+
+
+State 111
+
+   60 suite: T_NL end_suite •
+
+    $default  reduce using rule 60 (suite)
+
+
+State 112
+
+   49 elif_stmts: T_Elif bool_exp T_Cln start_suite • elif_stmts
+
+    T_Elif  shift, and go to state 93
+    T_Else  shift, and go to state 94
+
+    elif_stmts  go to state 118
+    else_stmt   go to state 96
+
+
+State 113
+
+   53 myrange: term T_Comma term •
+   54        | term T_Comma term • T_Comma term
+
+    T_Comma  shift, and go to state 119
+
+    $default  reduce using rule 53 (myrange)
+
+
+State 114
+
+   55 for_stmt: T_For T_ID T_In T_Range T_OP myrange T_CP T_Cln • start_suite
+
+    T_Number  shift, and go to state 5
+    T_True    shift, and go to state 6
+    T_False   shift, and go to state 7
+    T_ID      shift, and go to state 8
+    T_Print   shift, and go to state 9
+    T_NL      shift, and go to state 86
+    T_Not     shift, and go to state 11
+    T_Break   shift, and go to state 15
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 17
+
+    constant     go to state 18
+    term         go to state 19
+    basic_stmt   go to state 87
+    arith_exp    go to state 22
+    bool_exp     go to state 23
+    bool_term    go to state 24
+    bool_factor  go to state 25
+    break_stmt   go to state 26
+    assign_stmt  go to state 27
+    print_stmt   go to state 28
+    start_suite  go to state 120
+
+
+State 115
+
+   62 end_suite: T_CB $@4 • finalStatements
+
+    error     shift, and go to state 4
+    T_Number  shift, and go to state 5
+    T_True    shift, and go to state 6
+    T_False   shift, and go to state 7
+    T_ID      shift, and go to state 8
+    T_Print   shift, and go to state 9
+    T_Not     shift, and go to state 11
+    T_If      shift, and go to state 12
+    T_While   shift, and go to state 13
+    T_For     shift, and go to state 14
+    T_Break   shift, and go to state 15
+    T_MN      shift, and go to state 16
+    T_OP      shift, and go to state 17
+
+    constant         go to state 18
+    term             go to state 19
+    basic_stmt       go to state 21
+    arith_exp        go to state 22
+    bool_exp         go to state 23
+    bool_term        go to state 24
+    bool_factor      go to state 25
+    break_stmt       go to state 26
+    assign_stmt      go to state 27
+    print_stmt       go to state 28
+    finalStatements  go to state 121
+    cmpd_stmt        go to state 30
+    if_stmt          go to state 31
+    while_stmt       go to state 32
+    for_stmt         go to state 33
+
+
+State 116
+
+   64 end_suite: T_CB $@5 •
+
+    $default  reduce using rule 64 (end_suite)
+
+
+State 117
+
+   59 suite: T_NL finalStatements suite •
+
+    $default  reduce using rule 59 (suite)
+
+
+State 118
+
+   49 elif_stmts: T_Elif bool_exp T_Cln start_suite elif_stmts •
+
+    $default  reduce using rule 49 (elif_stmts)
+
+
+State 119
+
+   54 myrange: term T_Comma term T_Comma • term
+
+    T_Number  shift, and go to state 5
+    T_ID      shift, and go to state 40
+
+    constant  go to state 18
+    term      go to state 122
+
+
+State 120
+
+   55 for_stmt: T_For T_ID T_In T_Range T_OP myrange T_CP T_Cln start_suite •
+
+    $default  reduce using rule 55 (for_stmt)
+
+
+State 121
+
+   62 end_suite: T_CB $@4 finalStatements •
+
+    $default  reduce using rule 62 (end_suite)
+
+
+State 122
+
+   54 myrange: term T_Comma term T_Comma term •
+
+    $default  reduce using rule 54 (myrange)
