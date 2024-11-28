@@ -1,0 +1,67 @@
+VAR(x) EQUAL INT(5) UNKNOWN(
+) NWLN VAR(y) EQUAL INT(7) UNKNOWN(
+) NWLN VAR(z) EQUAL FLOAT(3.14) UNKNOWN(
+) NWLN IF VAR(x) COMPARISON(<) VAR(z) COLON UNKNOWN(
+) NWLN TAB IF VAR(y) COMPARISON(<) VAR(z) COLON UNKNOWN(
+) NWLN TAB TAB VAR(result) EQUAL VAR(z) MULT VAR(x) MINUS VAR(y) UNKNOWN(
+) NWLN TAB TAB VAR(result) EQUAL VAR(result) DIV INT(2) UNKNOWN(
+) NWLN TAB ELSE UNKNOWN(
+) NWLN TAB TAB VAR(result) EQUAL VAR(z) MULT VAR(x) PLUS VAR(y) UNKNOWN(
+) NWLN TAB TAB VAR(result) EQUAL VAR(result) DIV INT(2) UNKNOWN(
+) NWLN TAB TAB IF VAR(result) COMPARISON(>) VAR(y) COLON UNKNOWN(
+) NWLN TAB TAB TAB VAR(result) EQUAL VAR(result) DIV VAR(x) UNKNOWN(
+) NWLN TAB VAR(y) EQUAL VAR(x) MULT INT(2) UNKNOWN(
+) NWLN ELIF VAR(y) COMPARISON(<) VAR(x) COLON UNKNOWN(
+) NWLN TAB VAR(result) EQUAL VAR(z) UNKNOWN(
+) NWLN ELSE UNKNOWN(
+) NWLN TAB VAR(result) EQUAL VAR(z) MULT VAR(x) MULT VAR(x) MULT VAR(y) UNKNOWN(
+) NWLN VAR(x) EQUAL VAR(y) UNKNOWN(
+) NWLN 
+
+void main()
+{
+	int x_int,y_int;
+	float z_flt,result_flt;
+
+	x_int = 5;
+	y_int = 7;
+	z_flt = 3.14;
+	if ( x_int < z_flt)
+	{
+		if ( y_int < z_flt)
+		{
+			result_flt = z_flt * x_int - y_int;
+			result_flt = result_flt / 2;
+		}
+		else
+		{
+			result_flt = z_flt * x_int + y_int;
+			result_flt = result_flt / 2;
+			if ( result_flt > y_int)
+			{
+				result_flt = result_flt / x_int;
+			}
+		}
+		y_int = x_int * 2;
+	}
+	else if ( y_int < x_int)
+	{
+		result_flt = z_flt;
+	}
+	else
+	{
+		result_flt = z_flt * x_int * x_int * y_int;
+	}
+	x_int = y_int;
+
+}
+
+
+Parse Tree:
+Symbol Table:
+| Variable | Type  |
+|----------|-------|
+| result | float |
+| x | int |
+| y | int |
+| z | float |
